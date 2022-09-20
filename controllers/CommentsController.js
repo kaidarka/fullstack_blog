@@ -2,7 +2,7 @@ import CommentModel from "../models/Comment.js";
 
 export const getLastComments = async (req, res) => {
 	try {
-		const comments = await CommentModel.find().limit(5).exec();
+		const comments = await CommentModel.find().limit(5).populate("user").exec();
 		res.json(comments);
 	} catch (err) {
 		console.log(err);
@@ -17,7 +17,7 @@ export const getComments = async (req, res) => {
 		const postId = req.params.id;
 		const comments = await CommentModel.find({
 			postId: postId,
-		});
+		}).populate("user");
 		res.json(comments);
 	} catch (err) {
 		console.log(err);
