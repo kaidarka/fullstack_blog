@@ -4,8 +4,8 @@ import multer from "multer";
 import cors from "cors";
 
 import { checkAuth, handleValidationErrors } from "./utils/index.js";
-import { UserController, PostController } from "./controllers/index.js";
-import {registerValidation, loginValidation, postCreateValidation} from "./validations.js";
+import { UserController, PostController, CommentController } from "./controllers/index.js";
+import {registerValidation, loginValidation, postCreateValidation, commentCreateValidation} from "./validations.js";
 
 mongoose
 	.connect("mongodb+srv://admin:admin@cluster0.pbjgpo9.mongodb.net/blog?retryWrites=true&w=majority")
@@ -44,6 +44,12 @@ app.get("/posts/:id", PostController.getOne);
 app.post("/posts", checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
 app.patch("/posts/:id", checkAuth, postCreateValidation, handleValidationErrors, PostController.update);
 app.delete("/posts/:id", checkAuth, PostController.remove);
+
+app.get("/comments", CommentController.getLastComments);
+app.get("/comments/:id", CommentController.getComments);
+app.post("/comments", checkAuth, commentCreateValidation, handleValidationErrors, CommentController.create);
+app.delete("/comments/:id", checkAuth, CommentController.remove);
+
 
 app.get("/tags", PostController.getLastTags);
 
